@@ -1,0 +1,30 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: ai-review
+      id: ai-review
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: ai-review
+        setup-command: npm install openai @octokit/action
+        command: node ai-review.mjs
+        timeout: 10
+        max-score: 100
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        AI-REVIEW_RESULTS: "${{steps.ai-review.outputs.result}}"
+      with:
+        runners: ai-review
