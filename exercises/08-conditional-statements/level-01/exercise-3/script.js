@@ -7,4 +7,11 @@
 // } else {
 //     console.log("Senior");
 // }
-
+let score = 65;
+if (score <= 64) {
+    console.log("You failed");
+} else if (score == 65) {
+    console.log("Barely passed...");
+} else if (score >= 66) {
+    console.log("You did well");
+} 
